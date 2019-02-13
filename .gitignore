@@ -1,0 +1,31 @@
+# Local environments
+env/*.local.js
+
+# Node
+node_modules
+
+# Source maps
+.map
+
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Runtime data
+pids
+*.pid
+*.seed
+*.pid.lock
+
+# dotenv
+.env
+.env.test
+
+# IDE
+.idea
+.vs
+.vscode
+.vs-code
