@@ -6,5 +6,34 @@
   "repository": "http://gitlab.simple-code.net:8000/starters/sonder",
   "author": "Simple Code",
   "license": "MIT",
-  "private": true
+  "private": true,
+  "browserslist": [
+    ">= 0.01%",
+    "last 4 versions",
+    "Firefox ESR",
+    "android 4",
+    "opera 12",
+    "IE 10",
+    "maintained node versions",
+    "not dead"
+  ],
+  "engines": {
+    "node": ">= 8.0.0"
+  },
+  "scripts": {
+    "start": "cross-env NODE_ENV=development node cli",
+    "serve": "cross-env NODE_ENV=development node cli",
+    "build": "cross-env NODE_ENV=production node cli"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.2.2",
+    "@babel/preset-env": "^7.3.1",
+    "babel-loader": "^8.0.5",
+    "cross-env": "^5.2.0",
+    "webpack": "^4.29.3",
+    "webpack-dev-server": "^3.1.14"
+  },
+  "dependencies": {
+    "@babel/polyfill": "^7.2.5"
+  }
 }
