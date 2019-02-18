@@ -1,6 +1,9 @@
 # Local environments
 env/*.local.js
 
+# Built files
+public/assets
+
 # Node
 node_modules
 
