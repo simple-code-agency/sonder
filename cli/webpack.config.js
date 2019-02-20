@@ -189,8 +189,6 @@ module.exports = (envName) => new Promise((resolve, reject) => {
   
   const sonder = merge(defaultConfig.sonder, sonderUser);
   
-  console.log(sonderUser, sonder);
-  
   const envUser = resolveEnv(envName, sonder.env, sonder.failOnError);
   const env = merge(defaultConfig.env, envUser);
   
