@@ -11,6 +11,12 @@ const merge = (obj1, obj2) => {
     }
   });
   
+  Object.keys(obj2).forEach(key => {
+    if(merged[key] === undefined) {
+      merged[key] = obj2[key];
+    }
+  });
+  
   return merged;
 };
 
