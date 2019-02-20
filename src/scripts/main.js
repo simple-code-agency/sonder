@@ -1,1 +1,1 @@
-void(0);
+console.log('Welcome to Sonder!');

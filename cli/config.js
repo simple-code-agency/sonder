@@ -27,10 +27,10 @@ module.exports = {
       vendorFiles: (path, filename) => `vendor/${path}/${filename}`
     },
     devServer: {
-      port: 8080,
+      port: 8000,
       bsPort: 3000,
       base: 'public',
-      proxy: 'http://sonder.loc'
+      proxy: false
     },
     copyFiles: [
       {

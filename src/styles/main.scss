@@ -1,3 +1,35 @@
+$color-background: #102a43;
+$color-title: #BCCCDC;
+$color-subtitle: #627D98;
+
+$font-stack: 'Source Sans Pro', sans-serif;
+
 body {
-  background-color: blue;
+  margin: 0;
+}
+
+.sonder {
+  box-sizing: border-box;
+  align-items: center;
+  background-color: $color-background;
+  display: flex;
+  flex-direction: column;
+  font-family: $font-stack;
+  height: 100vh;
+  justify-content: center;
+  font-weight: 200;
+  width: 100vw;
+  
+  &__title {
+    color: $color-title;
+    font-size: 5rem;
+    font-weight: 200;
+    margin: 0;
+  }
+  
+  &__subtitle {
+    color: $color-subtitle;
+    font-weight: 200;
+    margin: 0;
+  }
 }
