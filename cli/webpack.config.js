@@ -83,7 +83,7 @@ const generateConfig = ({ devMode, sonder, env, port = undefined }) => ({
         ]
       },
       {
-        test: /\.(ttf|eot|woff2?|svg|jpe?g|png|gif|ico)$/,
+        test: /\.(ttf|eot|woff2?|svg|jpe?g|png|gif|ico|webp|mp4)$/,
         loader: devMode ? 'file-loader' : 'url-loader',
         exclude: /(node_modules|bower_components)/,
         options: {
@@ -92,7 +92,7 @@ const generateConfig = ({ devMode, sonder, env, port = undefined }) => ({
         }
       },
       {
-        test: /\.(ttf|eot|woff2?|svg|jpe?g|png|gif|ico)$/,
+        test: /\.(ttf|eot|woff2?|svg|jpe?g|png|gif|ico|webp|mp4)$/,
         loader: devMode ? 'file-loader' : 'url-loader',
         include: /(node_modules|bower_components)/,
         options: {

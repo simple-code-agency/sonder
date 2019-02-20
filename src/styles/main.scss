@@ -4,22 +4,27 @@ $color-subtitle: #627D98;
 
 $font-stack: 'Source Sans Pro', sans-serif;
 
+@mixin flex-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
 body {
   margin: 0;
 }
 
 .sonder {
+  @include flex-center;
+  
   box-sizing: border-box;
-  align-items: center;
   background-color: $color-background;
-  display: flex;
   flex-direction: column;
   font-family: $font-stack;
   height: 100vh;
-  justify-content: center;
   font-weight: 200;
   width: 100vw;
-  text-align: center;
   padding: 0 2rem;
   
   &__title {
@@ -42,10 +47,9 @@ body {
   }
   
   &__icons {
-    display: flex;
+    @include flex-center;
+    
     flex-wrap: wrap;
-    justify-content: center;
-    align-items: center;
     color: white;
     margin-top: 5rem;
   }
@@ -54,7 +58,7 @@ body {
 .icon {
   display: inline-block;
   color: inherit;
-  max-width: 4rem;
+  width: 4rem;
   
   & + .icon {
     margin-left: 5rem;
