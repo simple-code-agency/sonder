@@ -6,7 +6,6 @@ module.exports = {
       './styles/main.scss'
     ]
   },
-  includeModules: [],
   alias: {
     '@': 'src'
   },

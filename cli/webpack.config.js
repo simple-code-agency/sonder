@@ -126,6 +126,7 @@ const generateConfig = ({ devMode, sonder, env, port = undefined }) => ({
         filename: env.output.styleFilename
       })
     ]),
+    new webpack.ProvidePlugin(sonder.globals),
     new CleanPlugin(env.cleanFiles, {
       root: path.resolve(),
       allowExternal: true

@@ -9,6 +9,7 @@ module.exports = {
     },
     includeModules: [],
     alias: {},
+    globals: {},
     resolve: ['.wasm', '.mjs', '.js', '.json', '.jsx', '.ts', '.tsx'],
     env: {
       defaultEnv: 'static',
