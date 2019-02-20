@@ -19,17 +19,51 @@ body {
   justify-content: center;
   font-weight: 200;
   width: 100vw;
+  text-align: center;
+  padding: 0 2rem;
   
   &__title {
     color: $color-title;
-    font-size: 5rem;
+    font-size: 6rem;
     font-weight: 200;
     margin: 0;
+  }
+  
+  &__pronunciation {
+    font-size: 1rem;
+    font-weight: 300;
+    font-family: sans-serif;
   }
   
   &__subtitle {
     color: $color-subtitle;
     font-weight: 200;
     margin: 0;
+  }
+  
+  &__icons {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    margin-top: 5rem;
+  }
+}
+
+.icon {
+  display: inline-block;
+  color: inherit;
+  max-width: 4rem;
+  
+  & + .icon {
+    margin-left: 5rem;
+  }
+  
+  & svg {
+    display: block;
+    height: auto;
+    max-width: 100%;
+    width: 100%;
   }
 }
