@@ -18,12 +18,12 @@
     "not dead"
   ],
   "engines": {
-    "node": ">= 8.0.0"
+    "node": ">= 8.5.0"
   },
   "scripts": {
-    "start": "cross-env NODE_ENV=development webpack-dev-server --progress",
-    "serve": "cross-env NODE_ENV=development webpack-dev-server --progress",
-    "build": "cross-env NODE_ENV=production webpack --progress"
+    "start": "cross-env NODE_ENV=development webpack-dev-server --config cli/webpack.config.js --progress --env",
+    "serve": "cross-env NODE_ENV=development webpack-dev-server --config cli/webpack.config.js --progress --env",
+    "build": "cross-env NODE_ENV=production webpack --config cli/webpack.config.js --progress --env"
   },
   "devDependencies": {
     "@babel/core": "^7.2.2",

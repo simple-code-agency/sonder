@@ -1,5 +1,4 @@
 const path = require('path');
-
 const portfinder = require('portfinder');
 const slash = require('slash');
 const webpack = require('webpack');
@@ -11,35 +10,26 @@ const FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin');
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const TerserPlugin = require('terser-webpack-plugin');
 
-/**
- * Exclude modules from 'node_modules' and 'bower_components', except the ones
- * provided as argument to this function.
- * @param {Array} keep - Modules to keep included.
- * @returns {RegExp} - Regex used by a loader.
- */
-const excludeModules = (keep = []) => new RegExp('(node_modules|bower_components)(?![\\\/](' + keep.join('|') + ')).*');
+const resolveEnv = require('./util/resolveEnv');
+const excludeModules = require('./util/excludeModules');
+const merge = require('./util/merge');
 
-const devMode = process.env.NODE_ENV !== 'production';
+const defaultConfig = require('./config');
 
-const toConfig = (options = {}) => ({
-  context: path.resolve('src'),
-  entry: {
-    'main': [
-      './scripts/main.js',
-      './styles/main.scss'
-    ]
-  },
+const generateConfig = ({ devMode, sonder, env, port = undefined }) => ({
+  context: path.resolve(sonder.context),
+  entry: sonder.entry,
   output: {
-    filename: 'scripts/[name].js',
-    path: path.resolve('public/assets'),
-    publicPath: '/assets/'
+    filename: env.output.filename,
+    path: path.resolve(env.output.path),
+    publicPath: env.output.publicPath
   },
   module: {
     rules: [
       {
         test: /\.m?js$/,
         use: 'babel-loader',
-        exclude: excludeModules()
+        exclude: excludeModules(sonder.includeModules)
       },
       {
         test: /\.tsx?$/,
@@ -110,9 +100,9 @@ const toConfig = (options = {}) => ({
           name: '[name].[ext]',
           outputPath: (url, resourcePath) => {
             const regex = /(node_modules|bower_components)[\\\/](.*)[\\\/]/;
-            const module = resourcePath.match(regex)[2];
+            const modulePath = resourcePath.match(regex)[2];
             
-            return `vendor/${slash(module)}/${url}`;
+            return env.output.vendorFiles(slash(modulePath), url);
           }
         }
       }
@@ -124,39 +114,38 @@ const toConfig = (options = {}) => ({
       new FriendlyErrorsPlugin(),
       new BrowserSyncPlugin({
         host: 'localhost',
-        port: '4000',
-        proxy: `http://localhost:${options.port}/`,
-        logLevel: 'silent'
+        port: env.devServer.bsPort,
+        proxy: `http://localhost:${port}/`,
+        logLevel: 'silent',
+        files: env.watchFiles.map(file => path.resolve(file))
       }, {
         reload: false
       })
     ] : [
       new MiniCssExtractPlugin({
-        filename: 'styles/[name].css'
+        filename: env.output.styleFilename
       })
     ]),
-    new CopyPlugin([
-      {
-        from: path.resolve('src/**/*'),
-        to: path.resolve('public/assets'),
-        ignore: ['*.ts', '*.tsx', '*.js', '*.jsx', '*.css', '*.scss', '*.sass']
-      }
-    ]),
-    new CleanPlugin([
-      'public/assets'
-    ], {
+    new CleanPlugin(env.cleanFiles, {
       root: path.resolve(),
       allowExternal: true
+    }),
+    new CopyPlugin(env.copyFiles.map(file => ({
+      from: path.resolve(file.from),
+      to: path.resolve(file.to)
+    })), {
+      ignore: ['*.ts', '*.tsx', '*.js', '*.jsx', '*.css', '*.scss', '*.sass']
     })
   ],
   optimization: {
     minimizer: [new TerserPlugin()]
   },
   resolve: {
-    alias: {
-      '@': path.resolve('src')
-    },
-    extensions: ['.wasm', '.mjs', '.js', '.json', '.jsx', '.ts', '.tsx']
+    alias: (() => {
+      Object.keys(sonder.alias).map(key => sonder.alias[key] = path.resolve(sonder.alias[key]));
+      
+      return sonder.alias;
+    })()
   },
   devtool: devMode ? 'cheap-module-eval-source-map' : false,
   mode: devMode ? 'development' : 'production',
@@ -169,16 +158,18 @@ const toConfig = (options = {}) => ({
   },
   devServer: {
     clientLogLevel: 'none',
-    // Used only for static.
-    contentBase: path.resolve('public'),
-    // proxy: {
-    //   '*': {
-    //     target: 'http://website.loc',
-    //     secure: false,
-    //     changeOrigin: true
-    //   }
-    // },
-    port: options.port,
+    ...(env.devServer.proxy ? {
+      proxy: {
+        '*': {
+          target: env.devServer.proxy,
+          secure: false,
+          changeOrigin: true
+        }
+      }
+    } : {
+      contentBase: path.resolve(env.devServer.base)
+    }),
+    port: port,
     hot: true,
     noInfo: true,
     overlay: true,
@@ -186,10 +177,25 @@ const toConfig = (options = {}) => ({
   }
 });
 
-module.exports = () => new Promise((resolve, reject) => {
+module.exports = (envName) => new Promise((resolve, reject) => {
+  let sonderUser = null;
+  
+  try {
+    sonderUser = require(path.resolve('sonder.config'));
+  } catch(err) {
+    sonderUser = {};
+  }
+  
+  const sonder = merge(defaultConfig.sonder, sonderUser);
+  
+  const envUser = resolveEnv(envName, sonder.env, sonder.failOnError);
+  const env = merge(defaultConfig.env, envUser);
+  
+  const devMode = process.env.NODE_ENV !== 'production';
+  
   if(devMode) {
-    portfinder.getPort({ port: 3000 }, (err, port) => err ? reject(err) : resolve(toConfig({ port })));
+    portfinder.getPort({ port: env.devServer.port }, (err, port) => err ? reject(err) : resolve(generateConfig({ devMode, sonder, env, port })));
   } else {
-    resolve(toConfig());
+    resolve(generateConfig({ devMode, sonder, env, undefined}));
   }
 });
