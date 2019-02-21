@@ -3,6 +3,12 @@ module.exports = {
   'rules': {
     'no-empty-source': null,
     'string-quotes': 'single',
+    'no-eol-whitespace': [
+      true,
+      {
+        'ignore': ['empty-lines']
+      }
+    ],
     'at-rule-no-unknown': [
       true,
       {
