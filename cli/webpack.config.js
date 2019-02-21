@@ -31,11 +31,25 @@ const generateConfig = ({ devMode, sonder, env, port = undefined }) => ({
         enforce: 'pre',
         test: /\.js$/,
         exclude: /(node_modules|bower_components)/,
-        loader: 'eslint-loader',
-        options: {
-          failOnWarning: false,
-          failOnError: true
-        }
+        use: [
+          {
+            loader: 'eslint-loader',
+            options: {
+              failOnWarning: false,
+              failOnError: true
+            }
+          }
+        ]
+      },
+      {
+        enforce: 'pre',
+        test: /\.tsx?$/,
+        exclude: /(node_modules|bower_components)/,
+        use: [
+          {
+            loader: 'tslint-loader'
+          }
+        ]
       },
       {
         test: /\.m?js$/,
