@@ -8,6 +8,7 @@ const CleanPlugin = require('clean-webpack-plugin');
 const CopyPlugin = require('copy-webpack-plugin');
 const FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin');
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const StyleLintPlugin = require('stylelint-webpack-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
 
 const resolveEnv = require('./util/resolveEnv');
@@ -26,6 +27,16 @@ const generateConfig = ({ devMode, sonder, env, port = undefined }) => ({
   },
   module: {
     rules: [
+      {
+        enforce: 'pre',
+        test: /\.js$/,
+        exclude: /(node_modules|bower_components)/,
+        loader: 'eslint-loader',
+        options: {
+          failOnWarning: false,
+          failOnError: true
+        }
+      },
       {
         test: /\.m?js$/,
         use: 'babel-loader',
@@ -127,6 +138,10 @@ const generateConfig = ({ devMode, sonder, env, port = undefined }) => ({
       })
     ]),
     new webpack.ProvidePlugin(sonder.globals),
+    new StyleLintPlugin({
+      failOnError: !devMode,
+      syntax: 'scss',
+    }),
     new CleanPlugin(env.cleanFiles, {
       root: path.resolve(),
       allowExternal: true

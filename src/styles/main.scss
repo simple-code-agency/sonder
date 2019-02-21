@@ -1,6 +1,6 @@
 $color-background: #102a43;
-$color-title: #BCCCDC;
-$color-subtitle: #627D98;
+$color-title: #bcccdc;
+$color-subtitle: #627d98;
 
 $font-stack: 'Source Sans Pro', sans-serif;
 
@@ -17,7 +17,7 @@ body {
 
 .sonder {
   @include flex-center;
-  
+
   box-sizing: border-box;
   background-color: $color-background;
   flex-direction: column;
@@ -26,29 +26,29 @@ body {
   font-weight: 200;
   width: 100vw;
   padding: 0 2rem;
-  
+
   &__title {
     color: $color-title;
     font-size: 6rem;
     font-weight: 200;
     margin: 0;
   }
-  
+
   &__pronunciation {
     font-size: 1rem;
     font-weight: 300;
     font-family: sans-serif;
   }
-  
+
   &__subtitle {
     color: $color-subtitle;
     font-weight: 200;
     margin: 0;
   }
-  
+
   &__icons {
     @include flex-center;
-    
+
     flex-wrap: wrap;
     color: white;
     margin-top: 5rem;
@@ -59,11 +59,11 @@ body {
   display: inline-block;
   color: inherit;
   width: 4rem;
-  
+
   & + .icon {
     margin-left: 5rem;
   }
-  
+
   & svg {
     display: block;
     height: auto;
