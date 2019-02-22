@@ -6,15 +6,13 @@ module.exports = {
       './styles/main.scss'
     ]
   },
+  views: 'src/views',
   alias: {
     '@': 'src'
   },
   resolve: ['.wasm', '.mjs', '.js', '.json', '.jsx', '.ts', '.tsx'],
   env: {
-    defaultEnv: 'static',
-    root: 'env',
-    suffix: '.env',
-    localSuffix: '.env.local'
+    defaultEnv: 'static'
   },
   failOnError: false
 };

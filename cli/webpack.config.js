@@ -1,4 +1,5 @@
 const path = require('path');
+const nunjucks = require('nunjucks');
 const portfinder = require('portfinder');
 const slash = require('slash');
 const webpack = require('webpack');
@@ -108,7 +109,7 @@ const generateConfig = ({ devMode, sonder, env, port = undefined }) => ({
         ]
       },
       {
-        test: /\.(ttf|eot|woff2?|svg|jpe?g|png|gif|ico|webp|mp4)$/,
+        test: /\.(ttf|eot|woff2?|svg|jpe?g|png|gif|ico|webp|mp4|mp3)$/,
         loader: devMode ? 'file-loader' : 'url-loader',
         exclude: /(node_modules|bower_components)/,
         options: {
@@ -117,7 +118,7 @@ const generateConfig = ({ devMode, sonder, env, port = undefined }) => ({
         }
       },
       {
-        test: /\.(ttf|eot|woff2?|svg|jpe?g|png|gif|ico|webp|mp4)$/,
+        test: /\.(ttf|eot|woff2?|svg|jpe?g|png|gif|ico|webp|mp4|mp3)$/,
         loader: devMode ? 'file-loader' : 'url-loader',
         include: /(node_modules|bower_components)/,
         options: {
@@ -196,8 +197,32 @@ const generateConfig = ({ devMode, sonder, env, port = undefined }) => ({
         }
       }
     } : {
-      contentBase: path.resolve(env.devServer.base)
+      contentBase: false
     }),
+    setup: app => {
+      nunjucks.configure('src/views', {
+        express: app,
+        autoescape: true,
+        watch: true
+      });
+  
+      app.set('view engine', 'njk');
+      
+      // It's a file if it has an extension.
+      const fileRegex = /\.(.*)$/;
+      
+      app.get('*', (req, res, next) => {
+        let url = req.originalUrl;
+        const isFile = fileRegex.test(url);
+        
+        if(!isFile) {
+          url = url[url.length - 1] === '/' ? url.substr(1) + 'index' : url;
+          res.render(url);
+        } else {
+          next();
+        }
+      });
+    },
     clientLogLevel: 'none',
     port: port,
     hot: true,
@@ -226,6 +251,6 @@ module.exports = (envName) => new Promise((resolve, reject) => {
   if(devMode) {
     portfinder.getPort({ port: env.devServer.port }, (err, port) => err ? reject(err) : resolve(generateConfig({ devMode, sonder, env, port })));
   } else {
-    resolve(generateConfig({ devMode, sonder, env, undefined}));
+    resolve(generateConfig({ devMode, sonder, env, undefined }));
   }
 });

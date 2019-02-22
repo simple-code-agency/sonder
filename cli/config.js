@@ -7,12 +7,13 @@ module.exports = {
         './styles/main.scss'
       ]
     },
+    views: 'src/views',
     includeModules: [],
     alias: {},
     globals: {},
     resolve: ['.wasm', '.mjs', '.js', '.json', '.jsx', '.ts', '.tsx'],
     env: {
-      defaultEnv: 'static',
+      defaultEnv: null,
       root: 'env',
       suffix: '.env',
       localSuffix: '.env.local'
@@ -33,17 +34,8 @@ module.exports = {
       base: 'public',
       proxy: false
     },
-    copyFiles: [
-      {
-        from: 'src/**/*',
-        to: 'public/assets'
-      }
-    ],
-    cleanFiles: [
-      'public/assets'
-    ],
-    watchFiles: [
-      'public/**/*.html'
-    ]
+    copyFiles: [],
+    cleanFiles: [],
+    watchFiles: []
   }
 };
