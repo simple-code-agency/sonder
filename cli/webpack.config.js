@@ -187,7 +187,6 @@ const generateConfig = ({ devMode, sonder, env, port = undefined }) => ({
     children: false
   },
   devServer: {
-    clientLogLevel: 'none',
     ...(env.devServer.proxy ? {
       proxy: {
         '*': {
@@ -199,6 +198,7 @@ const generateConfig = ({ devMode, sonder, env, port = undefined }) => ({
     } : {
       contentBase: path.resolve(env.devServer.base)
     }),
+    clientLogLevel: 'none',
     port: port,
     hot: true,
     noInfo: true,

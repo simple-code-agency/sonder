@@ -16,6 +16,30 @@
 | [TypeScript](https://www.typescriptlang.org/) | (Optional) JavaScript type checking superset. |
 | [BrowserSync](https://browsersync.io/) | Browser utility tool. |
 | [PostCSS](https://postcss.org/) | CSS transformation and optimization. |
+| [ESLint](https://eslint.org/) | JavaScript linting tool. |
+| [Stylelint](https://github.com/stylelint/stylelint) | CSS/SCSS linting tool. |
+| [TSLint](https://palantir.github.io/tslint/) | TypeScript linting tool. |
 | ... | Other tools and plugins used by the above. |
 
 The idea is to use one project setup to rule them all. What it means is that you can use one frontend project and dispatch it on different backend systems, other frontend projects, build on different environments, etc.
+
+## Requirements
+
+- [Node.js](https://nodejs.org/en/) >= 8.5.0
+- [Yarn](https://yarnpkg.com/en/)
+
+## Installation
+To install all the dependencies, run:
+```bash
+yarn
+# or
+yarn install
+```
+
+## Development
+Once all the dependencies are installed, you can use the following commands:
+
+| Command | Description |
+| :--- | :---------- |
+| `yarn serve` or `yarn start` | Start the development server and compile assets when changes are made. |
+| `yarn build` | Compile assets and optimize them for production. |
