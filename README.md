@@ -266,3 +266,124 @@ Automatically resolve certain extensions. Allows imports without defining an ext
 **Webpack:** -
 
 Nunjucks views location. It is always resolved from CWD.
+
+## Environment configuration
+
+### Options
+
+### `cleanFiles`
+
+**Type:** `Array`
+
+**Default:** `[]`
+
+**Webpack:** -
+
+Specifies the list of files/folders to clean on each Webpack build process. Paths are always resolved from CWD.
+
+Example:
+```js
+module.exports = {
+  // ...
+  cleanFiles: ['public/assets']
+  // ...
+}
+```
+> Note: When in development mode, only on initial build will folder/file be cleaned.
+
+### `copyFiles`
+
+**Type:** `Array`
+
+**Default:** `[]`
+
+**Webpack:** -
+
+Specifies the list of files/folders to copy on each Webpack build process. Paths are always resolved from CWD.
+
+Example:
+```js
+module.exports = {
+  // ...
+  copyFiles: [
+    {
+      from: 'src/**/*',
+      to: 'public/assets'
+    }
+  ]
+  // ...
+}
+```
+> Note: Files will be copied only in production mode. In development mode, they will be served from memory.
+
+### `output`
+
+**Type:** `Object`
+
+**Default:**
+```
+{
+  filename: 'scripts/[name].js',
+  path: 'public/assets',
+  publicPath: '/assets/',
+  styleFilename: 'styles/[name].css',
+  vendorFiles: (path, filename) => `vendor/${path}/${filename}`
+}
+```
+
+**Webpack:** [`output`](https://webpack.js.org/configuration/output)
+
+Configuration object for output settings.
+
+### `output.filename`
+
+**Type:** `String`
+
+**Default:** `'scripts/[name].js'`
+
+**Webpack:** [`output.filename`](https://webpack.js.org/configuration/output/#outputfilename)
+
+Determines the name of each output bundle. By default, it's set to output into `scripts` folder with the initial name of the file.
+
+### `output.path`
+
+**Type:** `String`
+
+**Default:** `'public/assets'`
+
+**Webpack:** [`output.path`](https://webpack.js.org/configuration/output/#outputpath)
+
+The output directory. It is always resolved from CWD.
+
+### `output.publicPath`
+
+**Type:** `String`
+
+**Default:** `'/assets/'`
+
+**Webpack:** [`output.publicPath`](https://webpack.js.org/configuration/output/#outputpublicpath)
+
+This option specifies the public URL of the output directory when referenced in a browser. The value of the option is prefixed to every URL created by the runtime or loaders. Simple rule: The URL of your `output.path` from the view of the HTML page.
+
+### `output.styleFilename`
+
+**Type:** `String`
+
+**Default:** `'styles/[name].css'`
+
+**Webpack:** -
+
+Determines the name of the output stylesheet. By default, it's set to output into `styles` folder with the initial name of the file.
+
+### `output.vendorFiles`
+
+**Type:** `Function`
+
+**Default:**
+```
+(path, filename) => `vendor/${path}/${filename}`
+```
+
+**Webpack:** -
+
+When Webpack loads dependencies from `node_modules`, they often have some dependencies other than scripts and styles, like fonts, images, etc. This option sets the output path for said assets. By default, it will output into `vendor` folder with each module in it's own subfolder and with initial asset name.
