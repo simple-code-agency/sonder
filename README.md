@@ -121,7 +121,15 @@ The base directory, for resolving entry points and loaders from Webpack configur
 ### `entry`
 **Type:** `String|Array|Object|Function`
 
-**Default:** `{ main: ['./scripts/main.js', './styles/main.scss'] }`
+**Default:**
+```
+{
+  main: [
+    './scripts/main.js',
+    './styles/main.scss'
+  ]
+}
+```
 
 **Webpack:** [`entry`](https://webpack.js.org/configuration/entry-context/#entry)
 
@@ -152,6 +160,33 @@ Configuration object for environment settings.
 **Webpack:** -
 
 Name of the environment to use if no environment given when starting Yarn script.
+
+### `env.localSuffix`
+**Type:** `String`
+
+**Default:** `.env.local`
+
+**Webpack:** -
+
+Suffix to add to local environments. Local environments are usually ignored by Git as they are subjective for each user. They **always** take precedence over global environments.
+
+### `env.root`
+**Type:** `String`
+
+**Default:** `env`
+
+**Webpack:** -
+
+Name of the folder where environments are. It is always resolved from CWD.
+
+### `env.suffix`
+**Type:** `String`
+
+**Default:** `.env`
+
+**Webpack:** -
+
+Suffix used by global environments. For example, for the default setting, `static.js` is an **invalid** environment name. `static.env.js` is the correct one.
 
 ### `failOnError`
 **Type:** `boolean`
@@ -192,3 +227,42 @@ $(document).ready(function() { /* ... */ }); // No need for import.
 ```
 
 > Note: You still need to install jQuery as a dependency using `yarn add jquery`.
+
+### `includeModules`
+**Type:** `Array`
+
+**Default:** `[]`
+
+**Webpack:** [`Rule.exclude`](https://webpack.js.org/configuration/module/#ruleexclude)
+
+When bundling files, Sonder will exclude scripts from `node_modules` folder. However, some libraries require their dependencies to be run through Webpack too. This setting allows for specific modules to be included in the bundling process.
+
+Example:
+```js
+// sonder.config.js
+module.exports = {
+  // ...
+  includeModules: ['dom7', 'ssr-window', 'swiper']
+  // ...
+}
+```
+
+This will enable Dom7, ssr-window and Swiper to be run through Webpack, since [Swiper](https://idangero.us/swiper/get-started/) requires it.
+
+### `resolve`
+**Type:** `Array`
+
+**Default:** `['.wasm', '.mjs', '.js', '.json', '.jsx', '.ts', '.tsx']`
+
+**Webpack:** [`resolve.extensions`](https://webpack.js.org/configuration/resolve/#resolveextensions)
+
+Automatically resolve certain extensions. Allows imports without defining an extension.
+
+### `views`
+**Type:** `String`
+
+**Default:** `'src/views'`
+
+**Webpack:** -
+
+Nunjucks views location. It is always resolved from CWD.
