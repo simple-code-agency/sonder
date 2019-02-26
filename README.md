@@ -363,6 +363,16 @@ Port used by BrowserSync.
 
 Port used by Webpack Dev Server.
 
+### `devServer.proxy`
+
+**Type:** `false|String`
+
+**Default:** `false`
+
+**Webpack:** -
+
+Proxies given URL and all it's requests through Webpack Dev Server. Useful for integration with the existing server/backend.
+
 ### `output`
 
 **Type:** `Object`
