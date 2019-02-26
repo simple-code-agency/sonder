@@ -74,11 +74,11 @@ Sonder configuration has two parts - **compiler** and **environment** configurat
 
 > _CWD_ - current working directory. Root directory from where Sonder process is run (where `package.json` is).
 
-### Compiler configuration
+## Compiler configuration
 Compiler configuration is done through `sonder.config.js` file. It's nothing more than simplified configuration file for Webpack and it's dependencies.
 
-#### Options
-#### `alias`
+### Options
+### `alias`
 **Type:** `Object`
 
 **Default:** `{}`
@@ -109,7 +109,7 @@ export default function() { /* ... */ };
 import Router from '@/scripts/router'; // Instead of '../../../../router'.
 ```
 
-#### `context`
+### `context`
 **Type:** `String`
 
 **Default:** `'src'`
@@ -118,7 +118,7 @@ import Router from '@/scripts/router'; // Instead of '../../../../router'.
 
 The base directory, for resolving entry points and loaders from Webpack configuration. It is resolved from CWD.
 
-#### `entry`
+### `entry`
 **Type:** `String|Array|Object|Function`
 
 **Default:** `{ main: ['./scripts/main.js', './styles/main.scss'] }`
@@ -127,7 +127,7 @@ The base directory, for resolving entry points and loaders from Webpack configur
 
 The point(s) to enter the application. At this point, application starts executing. By default, it uses two files - one for scripts and one for styles - so that styles don't have to be imported inside JavaScript.
 
-#### `env`
+### `env`
 **Type:** `Object`
 
 **Default:**
@@ -144,7 +144,7 @@ The point(s) to enter the application. At this point, application starts executi
 
 Configuration object for environment settings.
 
-#### `env.defaultEnv`
+### `env.defaultEnv`
 **Type:** `null|String`
 
 **Default:** `null`
@@ -153,7 +153,7 @@ Configuration object for environment settings.
 
 Name of the environment to use if no environment given when starting Yarn script.
 
-#### `failOnError`
+### `failOnError`
 **Type:** `boolean`
 
 **Default:** `false`
@@ -162,7 +162,7 @@ Name of the environment to use if no environment given when starting Yarn script
 
 If set to `true`, it will fail if any error while loading configuration or environment happens. If set to `false`, it will use default values.
 
-#### `globals`
+### `globals`
 **Type:** `Object`
 
 **Default:** `{}`
