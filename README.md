@@ -316,6 +316,53 @@ module.exports = {
 ```
 > Note: Files will be copied only in production mode. In development mode, they will be served from memory.
 
+### `devServer`
+**Type:** `Object`
+
+**Default:**
+```
+{
+  port: 8000,
+  bsPort: 3000,
+  base: 'public',
+  proxy: false
+}
+```
+
+**Webpack:** -
+
+Configuration object for the development server.
+
+### `devServer.base`
+
+**Type:** `String`
+
+**Default:** `'public'`
+
+**Webpack:** [`devServer.contentBase`](https://webpack.js.org/configuration/dev-server#devservercontentbase)
+
+Tell the server where to serve content from. This is only necessary if you want to serve static files.
+
+### `devServer.bsPort`
+
+**Type:** `Integer`
+
+**Default:** `3000`
+
+**Webpack:** -
+
+Port used by BrowserSync.
+
+### `devServer.port`
+
+**Type:** `Integer`
+
+**Default:** `8000`
+
+**Webpack:** [`devServer.port`](https://webpack.js.org/configuration/dev-server#devserverport)
+
+Port used by Webpack Dev Server.
+
 ### `output`
 
 **Type:** `Object`
@@ -387,3 +434,4 @@ Determines the name of the output stylesheet. By default, it's set to output int
 **Webpack:** -
 
 When Webpack loads dependencies from `node_modules`, they often have some dependencies other than scripts and styles, like fonts, images, etc. This option sets the output path for said assets. By default, it will output into `vendor` folder with each module in it's own subfolder and with initial asset name.
+
