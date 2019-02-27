@@ -199,7 +199,7 @@ const generateConfig = ({ devMode, sonder, env, port = undefined }) => ({
     } : {
       contentBase: false
     }),
-    setup: app => {
+    setup: (app) => {
       nunjucks.configure('src/views', {
         express: app,
         autoescape: true,
@@ -232,7 +232,7 @@ const generateConfig = ({ devMode, sonder, env, port = undefined }) => ({
   }
 });
 
-module.exports = (envName) => new Promise((resolve, reject) => {
+module.exports = envName => new Promise((resolve, reject) => {
   let sonderUser = null;
   
   try {
