@@ -19,6 +19,7 @@
 | [ESLint](https://eslint.org/) | JavaScript linting tool. |
 | [Stylelint](https://github.com/stylelint/stylelint) | CSS/SCSS linting tool. |
 | [TSLint](https://palantir.github.io/tslint/) | TypeScript linting tool. |
+| [Nunjucks](https://mozilla.github.io/nunjucks/) | Templating engine. |
 | ... | Other tools and plugins used by the above. |
 
 The idea is to use one project setup to rule them all. What it means is that you can use one frontend project and dispatch it on different backend systems, other frontend projects, build on different environments, etc.
