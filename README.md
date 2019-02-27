@@ -259,13 +259,37 @@ This will enable Dom7, ssr-window and Swiper to be run through Webpack, since [S
 Automatically resolve certain extensions. Allows imports without defining an extension.
 
 ### `views`
+**Type:** `Object`
+
+**Default:**
+```
+{
+  root: 'src/views',
+  ext: 'njk'
+}
+```
+
+**Webpack:** -
+
+Nunjucks views configuration object.
+
+### `views.ext`
+**Type:** `String`
+
+**Default:** `'njk'`
+
+**Webpack:** -
+
+Defines extension for views.
+
+### `views.root`
 **Type:** `String`
 
 **Default:** `'src/views'`
 
 **Webpack:** -
 
-Nunjucks views location. It is always resolved from CWD.
+Root location of the views.
 
 ## Environment configuration
 
@@ -445,3 +469,12 @@ Determines the name of the output stylesheet. By default, it's set to output int
 
 When Webpack loads dependencies from `node_modules`, they often have some dependencies other than scripts and styles, like fonts, images, etc. This option sets the output path for said assets. By default, it will output into `vendor` folder with each module in it's own subfolder and with initial asset name.
 
+### `output.views`
+
+**Type:** `String`
+
+**Default:** `'public'`
+
+**Webpack:** -
+
+Root location to output compiled Nunjucks pages.
