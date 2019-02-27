@@ -29,6 +29,7 @@ module.exports = {
       path: 'public/assets',
       publicPath: '/assets/',
       styleFilename: 'styles/[name].css',
+      views: 'public',
       vendorFiles: (path, filename) => `vendor/${path}/${filename}`
     },
     devServer: {

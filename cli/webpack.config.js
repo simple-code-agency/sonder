@@ -1,4 +1,6 @@
+const fs = require('fs');
 const path = require('path');
+const glob = require('glob');
 const nunjucks = require('nunjucks');
 const portfinder = require('portfinder');
 const slash = require('slash');
@@ -233,6 +235,31 @@ const generateConfig = ({ devMode, sonder, env, port = undefined }) => ({
   }
 });
 
+const renderTemplates = (root, ext, env) => {
+  const partialPattern = /_(.*)$/;
+  const rootAbsolute = path.resolve(root);
+  
+  nunjucks.configure(root, {
+    autoescape: true,
+  });
+  
+  glob(`**/*.${ext}`, { cwd: rootAbsolute }, (err, files) => {
+    if(err) console.log(err);
+    
+    files.forEach(file => {
+      const basenameNoExt = path.basename(file, `.${ext}`);
+      if(!partialPattern.test(basenameNoExt)) {
+        const outputName = file.replace(path.basename(file), `${basenameNoExt}.html`);
+    
+        fs.writeFile(path.resolve(env.output.views, outputName), nunjucks.render(file), (err) => {
+          if(err) console.log(err);
+          console.log(file);
+        });
+      }
+    });
+  });
+};
+
 module.exports = envName => new Promise((resolve, reject) => {
   let sonderUser = null;
   
@@ -252,6 +279,7 @@ module.exports = envName => new Promise((resolve, reject) => {
   if(devMode) {
     portfinder.getPort({ port: env.devServer.port }, (err, port) => err ? reject(err) : resolve(generateConfig({ devMode, sonder, env, port })));
   } else {
+    renderTemplates(sonder.views.root, sonder.views.ext, env);
     resolve(generateConfig({ devMode, sonder, env, undefined }));
   }
 });
