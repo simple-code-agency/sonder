@@ -1,6 +1,6 @@
-$color-background: #102a43;
-$color-title: #bcccdc;
-$color-subtitle: #627d98;
+$color-background: #f0f5f9;
+$color-title: #4e6e8f;
+$color-subtitle: #4e6e8f;
 
 $font-stack: 'Source Sans Pro', sans-serif;
 
@@ -15,6 +15,13 @@ body {
   margin: 0;
 }
 
+svg {
+  display: block;
+  height: auto;
+  max-width: 100%;
+  width: 100%;
+}
+
 .sonder {
   @include flex-center;
   
@@ -27,11 +34,16 @@ body {
   width: 100vw;
   padding: 0 2rem;
   
+  &__logo {
+    max-width: 10rem;
+    width: 100%;
+  }
+  
   &__title {
     color: $color-title;
     font-size: 6rem;
     font-weight: 200;
-    margin: 0;
+    margin: 3rem 0 0 0;
   }
   
   &__pronunciation {
@@ -62,12 +74,5 @@ body {
   
   & + .icon {
     margin-left: 5rem;
-  }
-  
-  & svg {
-    display: block;
-    height: auto;
-    max-width: 100%;
-    width: 100%;
   }
 }
