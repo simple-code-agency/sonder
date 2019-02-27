@@ -235,7 +235,7 @@ const generateConfig = ({ devMode, sonder, env, port = undefined }) => ({
   }
 });
 
-const renderTemplates = (root, ext, env) => {
+const renderTemplates = ({ root, ext }, env) => {
   const partialPattern = /_(.*)$/;
   const rootAbsolute = path.resolve(root);
   
@@ -253,7 +253,6 @@ const renderTemplates = (root, ext, env) => {
     
         fs.writeFile(path.resolve(env.output.views, outputName), nunjucks.render(file), (err) => {
           if(err) console.log(err);
-          console.log(file);
         });
       }
     });
@@ -279,7 +278,7 @@ module.exports = envName => new Promise((resolve, reject) => {
   if(devMode) {
     portfinder.getPort({ port: env.devServer.port }, (err, port) => err ? reject(err) : resolve(generateConfig({ devMode, sonder, env, port })));
   } else {
-    renderTemplates(sonder.views.root, sonder.views.ext, env);
+    renderTemplates(sonder.views, env);
     resolve(generateConfig({ devMode, sonder, env, undefined }));
   }
 });
