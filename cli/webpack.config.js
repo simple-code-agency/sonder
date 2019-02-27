@@ -163,7 +163,8 @@ const generateConfig = ({ devMode, sonder, env, port = undefined }) => ({
     }),
     new CopyPlugin(env.copyFiles.map(file => ({
       from: path.resolve(file.from),
-      to: path.resolve(file.to)
+      to: path.resolve(file.to),
+      ignore: file.ignore
     })), {
       ignore: ['*.ts', '*.tsx', '*.js', '*.jsx', '*.css', '*.scss', '*.sass']
     })
@@ -200,13 +201,13 @@ const generateConfig = ({ devMode, sonder, env, port = undefined }) => ({
       contentBase: false
     }),
     setup: (app) => {
-      nunjucks.configure('src/views', {
+      nunjucks.configure(sonder.views.root, {
         express: app,
         autoescape: true,
         watch: true
       });
   
-      app.set('view engine', 'njk');
+      app.set('view engine', sonder.views.ext);
       
       // It's a file if it has an extension.
       const fileRegex = /\.(.*)$/;

@@ -7,7 +7,10 @@ module.exports = {
         './styles/main.scss'
       ]
     },
-    views: 'src/views',
+    views: {
+      root: 'src/views',
+      ext: 'njk'
+    },
     includeModules: [],
     alias: {},
     globals: {},
