@@ -198,9 +198,9 @@ const generateConfig = ({ devMode, sonder, env, port = undefined }) => ({
         }
       }
     } : {
-      contentBase: false
+      contentBase: env.devServer.base
     }),
-    setup: (app) => {
+    setup: env.devServer.base ? undefined : (app) => {
       nunjucks.configure(sonder.views.root, {
         express: app,
         autoescape: true,
@@ -208,14 +208,14 @@ const generateConfig = ({ devMode, sonder, env, port = undefined }) => ({
       });
   
       app.set('view engine', sonder.views.ext);
-      
-      // It's a file if it has an extension.
+  
+      // Regex assumes that it's a file if it has an extension.
       const fileRegex = /\.(.*)$/;
-      
+  
       app.get('*', (req, res, next) => {
         let url = req.originalUrl;
         const isFile = fileRegex.test(url);
-        
+    
         if(!isFile) {
           url = url[url.length - 1] === '/' ? url.substr(1) + 'index' : url;
           res.render(url);

@@ -34,7 +34,7 @@ module.exports = {
     devServer: {
       port: 8000,
       bsPort: 3000,
-      base: 'public',
+      base: false,
       proxy: false
     },
     copyFiles: [],
