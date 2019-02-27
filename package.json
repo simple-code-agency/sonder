@@ -3,8 +3,8 @@
   "version": "1.0.0",
   "description": "Multi-environment no-framework Webpack starter.",
   "main": "index.js",
-  "repository": "http://gitlab.simple-code.net:8000/starters/sonder",
-  "author": "Simple Code",
+  "repository": "https://github.com/TheRuky/Sonder",
+  "author": "TheRuky",
   "license": "MIT",
   "private": true,
   "browserslist": [
