@@ -42,7 +42,7 @@ const generateConfig = ({ devMode, sonder, env, wdsPort = undefined, bsPort = un
             loader: 'eslint-loader',
             options: {
               failOnWarning: false,
-              failOnError: true
+              failOnError: !devMode
             }
           }
         ]

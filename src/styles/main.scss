@@ -29,14 +29,27 @@ svg {
   background-color: $color-background;
   flex-direction: column;
   font-family: $font-stack;
-  height: 100vh;
+  min-height: 100vh;
   font-weight: 200;
-  width: 100vw;
+  min-width: 100vw;
   padding: 0 2rem;
   
   &__logo {
     max-width: 10rem;
     width: 100%;
+  }
+  
+  &__links {
+    margin-top: 3rem;
+  }
+  
+  &__link {
+    text-decoration: none;
+    color: #555;
+    font-weight: 400;
+    font-size: 1.2rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1rem;
   }
   
   &__title {
@@ -71,6 +84,13 @@ svg {
   display: inline-block;
   color: inherit;
   width: 4rem;
+  
+  &--inline {
+    display: inline-block;
+    max-width: 1.5rem;
+    height: auto;
+    vertical-align: -0.225rem;
+  }
   
   & + .icon {
     margin-left: 5rem;
