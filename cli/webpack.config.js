@@ -153,7 +153,7 @@ const generateConfig = ({ devMode, sonder, env, wdsPort = undefined, bsPort = un
         reload: false
       }),
       new DoneInfoPlugin([
-        chalk.white(`  App served on: ${chalk.magenta('http://localhost:' + bsPort + '/')}.`),
+        chalk.white(`  App served on: ${chalk.magenta('http://localhost:' + bsPort + '/')}`),
         '  ',
         chalk.white('  Note that the development build is not optimized.'),
         chalk.white(`  To create a production build, run ${chalk.cyan('yarn build <env_name>')}.`)
@@ -165,7 +165,8 @@ const generateConfig = ({ devMode, sonder, env, wdsPort = undefined, bsPort = un
       new RenderNunjucksTemplatesPlugin({
         root: sonder.views.root,
         ext: sonder.views.ext,
-        output: env.output.views
+        output: env.output.views,
+        render: !env.devServer.base
       })
     ]),
     new webpack.ProvidePlugin(sonder.globals),
@@ -215,7 +216,7 @@ const generateConfig = ({ devMode, sonder, env, wdsPort = undefined, bsPort = un
     } : {
       contentBase: env.devServer.base
     }),
-    setup: env.devServer.base ? undefined : (app) => {
+    setup: env.devServer.base || env.devServer.proxy ? undefined : (app) => {
       nunjucks.configure(sonder.views.root, {
         express: app,
         autoescape: true,

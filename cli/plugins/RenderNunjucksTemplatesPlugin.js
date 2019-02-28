@@ -13,25 +13,27 @@ module.exports = class {
   }
   
   apply(compiler) {
-    compiler.hooks.done.tap('RenderNunjucksTemplatesPlugin', (stats) => {
-      if(stats.hasErrors()) {
-        return;
-      }
-      
-      glob(`**/*.${this.options.ext}`, { cwd: this.rootAbsolute }, (err, files) => {
-        if(err) console.log(err);
+    if(this.options.render) {
+      compiler.hooks.done.tap('RenderNunjucksTemplatesPlugin', (stats) => {
+        if(stats.hasErrors()) {
+          return;
+        }
     
-        files.forEach(file => {
-          const basenameNoExt = path.basename(file, `.${this.options.ext}`);
-          if(!this.partialPattern.test(basenameNoExt)) {
-            const outputName = file.replace(path.basename(file), `${basenameNoExt}.html`);
-        
-            fs.writeFile(path.resolve(this.options.output, outputName), nunjucks.render(file), (err) => {
-              if(err) console.log(err);
-            });
-          }
+        glob(`**/*.${this.options.ext}`, { cwd: this.rootAbsolute }, (err, files) => {
+          if(err) console.log(err);
+      
+          files.forEach(file => {
+            const basenameNoExt = path.basename(file, `.${this.options.ext}`);
+            if(!this.partialPattern.test(basenameNoExt)) {
+              const outputName = file.replace(path.basename(file), `${basenameNoExt}.html`);
+          
+              fs.writeFile(path.resolve(this.options.output, outputName), nunjucks.render(file), (err) => {
+                if(err) console.log(err);
+              });
+            }
+          });
         });
       });
-    });
+    }
   }
 };
