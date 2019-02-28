@@ -297,7 +297,7 @@ module.exports = envName => new Promise((resolve, reject) => {
           return;
         }
         
-        resolve(generateConfig({ devMode, sonder, env, wdsPort, bsPort}));
+        resolve(generateConfig({ devMode, sonder, env, wdsPort, bsPort }));
       });
     });
   } else {

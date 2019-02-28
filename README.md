@@ -26,7 +26,7 @@ The idea is to use one project setup to rule them all. What it means is that you
 
 ## Requirements
 
-- [Node.js](https://nodejs.org/en/) >= 8.5.0
+- [Node.js](https://nodejs.org/en/) >= 8.10.0
 - [Yarn](https://yarnpkg.com/en/)
 
 ## Structure
