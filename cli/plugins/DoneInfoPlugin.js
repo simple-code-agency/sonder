@@ -4,7 +4,7 @@ module.exports = class {
   }
   
   apply(compiler) {
-    compiler.hooks.done.tap('after-serve-info', stats => {
+    compiler.hooks.done.tap('DoneInfoPlugin', stats => {
       if(stats.hasErrors()) {
         return;
       }

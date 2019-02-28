@@ -22,7 +22,8 @@ const merge = require('./util/merge');
 
 const defaultConfig = require('./config');
 
-const AfterServeInfoPlugin = require('./plugins/AfterServeInfoPlugin');
+const DoneInfoPlugin = require('./plugins/DoneInfoPlugin');
+const RenderNunjucksTemplatesPlugin = require('./plugins/RenderNunjucksTemplatesPlugin');
 
 const generateConfig = ({ devMode, sonder, env, wdsPort = undefined, bsPort = undefined }) => ({
   context: path.resolve(sonder.context),
@@ -153,7 +154,7 @@ const generateConfig = ({ devMode, sonder, env, wdsPort = undefined, bsPort = un
       }, {
         reload: false
       }),
-      new AfterServeInfoPlugin([
+      new DoneInfoPlugin([
         chalk.white(`  App served on: ${chalk.magenta('http://localhost:' + bsPort + '/')}.`),
         '  ',
         chalk.white('  Note that the development build is not optimized.'),
@@ -162,6 +163,11 @@ const generateConfig = ({ devMode, sonder, env, wdsPort = undefined, bsPort = un
     ] : [
       new MiniCssExtractPlugin({
         filename: env.output.styleFilename
+      }),
+      new RenderNunjucksTemplatesPlugin({
+        root: sonder.views.root,
+        ext: sonder.views.ext,
+        output: env.output.views
       })
     ]),
     new webpack.ProvidePlugin(sonder.globals),
@@ -244,30 +250,6 @@ const generateConfig = ({ devMode, sonder, env, wdsPort = undefined, bsPort = un
   }
 });
 
-const renderTemplates = ({ root, ext }, env) => {
-  const partialPattern = /_(.*)$/;
-  const rootAbsolute = path.resolve(root);
-  
-  nunjucks.configure(root, {
-    autoescape: true,
-  });
-  
-  glob(`**/*.${ext}`, { cwd: rootAbsolute }, (err, files) => {
-    if(err) console.log(err);
-    
-    files.forEach(file => {
-      const basenameNoExt = path.basename(file, `.${ext}`);
-      if(!partialPattern.test(basenameNoExt)) {
-        const outputName = file.replace(path.basename(file), `${basenameNoExt}.html`);
-    
-        fs.writeFile(path.resolve(env.output.views, outputName), nunjucks.render(file), (err) => {
-          if(err) console.log(err);
-        });
-      }
-    });
-  });
-};
-
 module.exports = envName => new Promise((resolve, reject) => {
   let sonderUser = null;
   
@@ -301,7 +283,6 @@ module.exports = envName => new Promise((resolve, reject) => {
       });
     });
   } else {
-    renderTemplates(sonder.views, env);
     resolve(generateConfig({ devMode, sonder, env }));
   }
 });

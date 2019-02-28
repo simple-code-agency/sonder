@@ -3,7 +3,7 @@ module.exports = {
     'src/**/*.njk'
   ],
   cleanFiles: [
-    'public/assets'
+    'public'
   ],
   copyFiles: [
     {
