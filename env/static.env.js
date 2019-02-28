@@ -8,8 +8,7 @@ module.exports = {
   copyFiles: [
     {
       from: 'src/**/*',
-      to: 'public/assets',
-      ignore: ['*.njk']
+      to: 'public/assets'
     }
   ]
 };

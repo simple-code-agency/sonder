@@ -14,7 +14,7 @@ module.exports = {
     includeModules: [],
     alias: {},
     globals: {},
-    resolve: ['.wasm', '.mjs', '.js', '.json', '.jsx', '.ts', '.tsx'],
+    resolve: ['.wasm', '.mjs', '.js', '.json', '.jsx', '.ts', '.tsx', '.njk'],
     env: {
       defaultEnv: null,
       root: 'env',

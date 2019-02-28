@@ -13,7 +13,7 @@ module.exports = {
   alias: {
     '@': 'src'
   },
-  resolve: ['.wasm', '.mjs', '.js', '.json', '.jsx', '.ts', '.tsx'],
+  resolve: ['.wasm', '.mjs', '.js', '.json', '.jsx', '.ts', '.tsx', '.njk'],
   env: {
     defaultEnv: 'static'
   },

@@ -1,5 +1,7 @@
 const fs = require('fs');
 const path = require('path');
+
+const chalk = require('chalk');
 const glob = require('glob');
 const nunjucks = require('nunjucks');
 const portfinder = require('portfinder');
@@ -20,7 +22,9 @@ const merge = require('./util/merge');
 
 const defaultConfig = require('./config');
 
-const generateConfig = ({ devMode, sonder, env, port = undefined }) => ({
+const AfterServeInfoPlugin = require('./plugins/AfterServeInfoPlugin');
+
+const generateConfig = ({ devMode, sonder, env, wdsPort = undefined, bsPort = undefined }) => ({
   context: path.resolve(sonder.context),
   entry: sonder.entry,
   output: {
@@ -142,13 +146,19 @@ const generateConfig = ({ devMode, sonder, env, port = undefined }) => ({
       new FriendlyErrorsPlugin(),
       new BrowserSyncPlugin({
         host: 'localhost',
-        port: env.devServer.bsPort,
-        proxy: `http://localhost:${port}/`,
+        port: bsPort,
+        proxy: `http://localhost:${wdsPort}/`,
         logLevel: 'silent',
         files: env.watchFiles.map(file => path.resolve(file))
       }, {
         reload: false
-      })
+      }),
+      new AfterServeInfoPlugin([
+        chalk.white(`  App served on: ${chalk.magenta('http://localhost:' + bsPort + '/')}.`),
+        '  ',
+        chalk.white('  Note that the development build is not optimized.'),
+        chalk.white(`  To create a production build, run ${chalk.cyan('yarn build <env_name>')}.`)
+      ])
     ] : [
       new MiniCssExtractPlugin({
         filename: env.output.styleFilename
@@ -160,15 +170,14 @@ const generateConfig = ({ devMode, sonder, env, port = undefined }) => ({
       syntax: 'scss',
     }),
     new CleanPlugin(env.cleanFiles, {
-      root: path.resolve(),
-      allowExternal: true
+      root: process.cwd(),
+      allowExternal: true,
+      verbose: false,
+      beforeEmit: true
     }),
-    new CopyPlugin(env.copyFiles.map(file => ({
-      from: path.resolve(file.from),
-      to: path.resolve(file.to),
-      ignore: file.ignore
-    })), {
-      ignore: ['*.ts', '*.tsx', '*.js', '*.jsx', '*.css', '*.scss', '*.sass']
+    new CopyPlugin(env.copyFiles, {
+      context: process.cwd(),
+      ignore: ['*.ts', '*.tsx', '*.js', '*.jsx', '*.css', '*.scss', '*.sass', '*.njk']
     })
   ],
   optimization: {
@@ -227,7 +236,7 @@ const generateConfig = ({ devMode, sonder, env, port = undefined }) => ({
       });
     },
     clientLogLevel: 'none',
-    port: port,
+    port: wdsPort,
     hot: true,
     noInfo: true,
     overlay: true,
@@ -276,9 +285,23 @@ module.exports = envName => new Promise((resolve, reject) => {
   const devMode = process.env.NODE_ENV !== 'production';
   
   if(devMode) {
-    portfinder.getPort({ port: env.devServer.port }, (err, port) => err ? reject(err) : resolve(generateConfig({ devMode, sonder, env, port })));
+    portfinder.getPort({ port: env.devServer.port }, (err, wdsPort) => {
+      if(err) {
+        reject(err);
+        return;
+      }
+      
+      portfinder.getPort({ port: env.devServer.bsPort }, (err, bsPort) => {
+        if(err) {
+          reject(err);
+          return;
+        }
+        
+        resolve(generateConfig({ devMode, sonder, env, wdsPort, bsPort}));
+      });
+    });
   } else {
     renderTemplates(sonder.views, env);
-    resolve(generateConfig({ devMode, sonder, env, undefined }));
+    resolve(generateConfig({ devMode, sonder, env }));
   }
 });
