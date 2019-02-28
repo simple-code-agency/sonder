@@ -1,8 +1,6 @@
-const fs = require('fs');
 const path = require('path');
 
 const chalk = require('chalk');
-const glob = require('glob');
 const nunjucks = require('nunjucks');
 const portfinder = require('portfinder');
 const slash = require('slash');
@@ -16,14 +14,14 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const StyleLintPlugin = require('stylelint-webpack-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
 
+const DoneInfoPlugin = require('./plugins/DoneInfoPlugin');
+const RenderNunjucksTemplatesPlugin = require('./plugins/RenderNunjucksTemplatesPlugin');
+
 const resolveEnv = require('./util/resolveEnv');
 const excludeModules = require('./util/excludeModules');
 const merge = require('./util/merge');
 
 const defaultConfig = require('./config');
-
-const DoneInfoPlugin = require('./plugins/DoneInfoPlugin');
-const RenderNunjucksTemplatesPlugin = require('./plugins/RenderNunjucksTemplatesPlugin');
 
 const generateConfig = ({ devMode, sonder, env, wdsPort = undefined, bsPort = undefined }) => ({
   context: path.resolve(sonder.context),
