@@ -17,6 +17,8 @@ const TerserPlugin = require('terser-webpack-plugin');
 const DoneInfoPlugin = require('./plugins/DoneInfoPlugin');
 const RenderNunjucksTemplatesPlugin = require('./plugins/RenderNunjucksTemplatesPlugin');
 
+const nunjucksTemplateError = require('./templates/nunjucksTemplateError');
+
 const resolveEnv = require('./util/resolveEnv');
 const excludeModules = require('./util/excludeModules');
 const merge = require('./util/merge');
@@ -180,8 +182,11 @@ const generateConfig = ({ devMode, sonder, env, wdsPort = undefined, bsPort = un
       verbose: false,
       beforeEmit: true
     }),
-    new CopyPlugin(env.copyFiles, {
-      context: process.cwd(),
+    new CopyPlugin(env.copyFiles.map((file) => ({
+      ...file,
+      from: path.resolve(file.from),
+      to: path.resolve(file.to)
+    })), {
       ignore: ['*.ts', '*.tsx', '*.js', '*.jsx', '*.css', '*.scss', '*.sass', '*.njk']
     })
   ],
@@ -216,7 +221,7 @@ const generateConfig = ({ devMode, sonder, env, wdsPort = undefined, bsPort = un
     } : {
       contentBase: env.devServer.base
     }),
-    setup: env.devServer.base || env.devServer.proxy ? undefined : (app) => {
+    setup: env.devServer.proxy ? undefined : (app) => {
       nunjucks.configure(sonder.views.root, {
         express: app,
         autoescape: true,
@@ -231,10 +236,21 @@ const generateConfig = ({ devMode, sonder, env, wdsPort = undefined, bsPort = un
       app.get('*', (req, res, next) => {
         let url = req.originalUrl;
         const isFile = fileRegex.test(url);
-    
+  
         if(!isFile) {
-          url = url[url.length - 1] === '/' ? url.substr(1) + 'index' : url;
-          res.render(url);
+          url = url[url.length - 1] === '/' ? url.substr(1) + 'index' : url.substr(1);
+          res.render(url, undefined, (err, html) => {
+            if(err) {
+              if(err.message.includes('template not found')) {
+                res.status(404);
+              } else {
+                res.status(500);
+              }
+              res.send(nunjucksTemplateError({ root: path.resolve(sonder.views.root), err }));
+            } else {
+              res.send(html);
+            }
+          });
         } else {
           next();
         }
